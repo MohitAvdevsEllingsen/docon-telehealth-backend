@@ -31,6 +31,77 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/notifications', notificationRoutes);
 
+// Root landing page with interactive status dashboard
+app.get('/', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>DocOn & Telehealth API Backend</title>
+      <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 36px; max-width: 600px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+        .badge { background: #10b981; color: #fff; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+        .badge::before { content: ""; width: 8px; height: 8px; background: #fff; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        h1 { font-size: 24px; font-weight: 700; color: #ffffff; }
+        p.sub { color: #94a3b8; font-size: 14px; margin-top: 4px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
+        .info-box { background: #0f172a; padding: 14px; border-radius: 10px; border: 1px solid #334155; }
+        .info-label { font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 600; }
+        .info-val { font-size: 14px; color: #e2e8f0; font-weight: 500; margin-top: 4px; }
+        .section-title { font-size: 13px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+        .links-list { display: flex; flex-direction: column; gap: 8px; }
+        .api-link { display: flex; justify-content: space-between; align-items: center; background: #0f172a; border: 1px solid #334155; padding: 12px 16px; border-radius: 8px; text-decoration: none; color: #38bdf8; font-size: 14px; font-family: monospace; transition: all 0.2s; }
+        .api-link:hover { background: #334155; color: #7dd3fc; border-color: #38bdf8; }
+        .method { background: #0284c7; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-right: 8px; }
+        .footer { text-align: center; margin-top: 24px; color: #64748b; font-size: 12px; }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <div class="header">
+          <div>
+            <span class="badge">Live & Operational</span>
+            <h1 style="margin-top: 8px;">DocOn & Telehealth Backend</h1>
+            <p class="sub">Powered by PharmEasy DocOn &bull; Node.js Express & MongoDB Atlas</p>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-box">
+            <div class="info-label">Environment</div>
+            <div class="info-val">Production (Render Cloud)</div>
+          </div>
+          <div class="info-box">
+            <div class="info-label">Database</div>
+            <div class="info-val">MongoDB Atlas (Cluster 0)</div>
+          </div>
+        </div>
+
+        <div class="section-title">Available API Endpoints</div>
+        <div class="links-list">
+          <a class="api-link" href="/api/health" target="_blank"><span><span class="method">GET</span>/api/health</span><span>&rarr;</span></a>
+          <a class="api-link" href="/api/doctors" target="_blank"><span><span class="method">GET</span>/api/doctors</span><span>&rarr;</span></a>
+          <a class="api-link" href="/api/prescriptions?grouped=true" target="_blank"><span><span class="method">GET</span>/api/prescriptions?grouped=true</span><span>&rarr;</span></a>
+          <a class="api-link" href="/api/payments/latest" target="_blank"><span><span class="method">GET</span>/api/payments/latest</span><span>&rarr;</span></a>
+          <a class="api-link" href="/api/notifications" target="_blank"><span><span class="method">GET</span>/api/notifications</span><span>&rarr;</span></a>
+          <a class="api-link" href="/view/Sep25_2026" target="_blank"><span><span class="method">GET</span>/view/Sep25_2026 (Web Rx)</span><span>&rarr;</span></a>
+        </div>
+
+        <div class="footer">
+          DocOn Telehealth API Service &bull; All systems operational
+        </div>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
